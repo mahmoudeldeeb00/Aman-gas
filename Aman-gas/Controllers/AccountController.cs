@@ -93,6 +93,7 @@ namespace Aman_gas.Controllers
         public  void Print(string? message)
         {
         Console.WriteLine($"{message} Task is excuted in {DateTime.Now}");
+
         } 
         [ApiExplorerSettings(IgnoreApi =true)]
         public  void PrintMonthly(string? message)
