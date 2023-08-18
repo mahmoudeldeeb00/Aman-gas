@@ -9,6 +9,8 @@ namespace BL.DTOS
     public class AuthenticationModel
     {
         public string Message { get; set; }
+        public char[]? GetChars { get; set; }
+        public string? CarNumbers { get; set; }
         public bool IsAuthenticated { get; set; }
         public string UserName { get; set; }
         public string FullName { get; set; }

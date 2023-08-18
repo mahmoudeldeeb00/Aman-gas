@@ -13,12 +13,16 @@ namespace Data.Entities
         [Key]
         public int Id { get; set; }
         public string? Name{ get; set; }
-        
         public int CarTypeId{ get; set; }
+        public char FirstChar { get; set; }
+        public char SecondChar { get; set; }
+        public char ThirdChar { get; set; }
+        public string?  CarNumbers { get; set; }
+
         [ForeignKey("CarTypeId")]    
         public CarType CarType { get; set; } 
-        public string UserId{ get; set; }
-        [ForeignKey("UserId")]    
-        public AppUser AppUser { get; set; } 
+        public string User{ get; set; }
+        //[ForeignKey("UserId")]    
+        //public AppUser AppUser { get; set; } 
     }
 }

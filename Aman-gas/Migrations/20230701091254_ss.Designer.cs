@@ -4,6 +4,7 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aman_gas.Migrations
 {
     [DbContext(typeof(DbContainer))]
-    partial class DbContainerModelSnapshot : ModelSnapshot
+    [Migration("20230701091254_ss")]
+    partial class ss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -423,15 +425,10 @@ namespace Aman_gas.Migrations
                     b.Property<DateTime>("RequestDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StatioId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StatioId");
 
                     b.ToTable("SalesRequest");
                 });
@@ -759,17 +756,6 @@ namespace Aman_gas.Migrations
                     b.HasOne("Data.Entities.Station", null)
                         .WithMany("SalesMen")
                         .HasForeignKey("StationId1");
-
-                    b.Navigation("Station");
-                });
-
-            modelBuilder.Entity("Data.Entities.SalesRequest", b =>
-                {
-                    b.HasOne("Data.Entities.Station", "Station")
-                        .WithMany()
-                        .HasForeignKey("StatioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Station");
                 });

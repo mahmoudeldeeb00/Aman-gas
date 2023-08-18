@@ -9,9 +9,11 @@ namespace BL.DTOS
 {
     public class getTokenModel
     {
-        [Required(ErrorMessage ="UserName is Required ")]
         public string UserName { get; set; }
         [Required(ErrorMessage ="Password is Required ")]
         public string Password { get; set; }
+        public char[]? CarChars { get; set; }
+
+        public string? CarNumbers { get; set; }
     }
 }

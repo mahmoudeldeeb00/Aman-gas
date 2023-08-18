@@ -1,6 +1,7 @@
 ﻿using BL.DTOS;
 using BL.Helpers;
 using BL.IServices;
+using Data;
 using Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -20,14 +21,15 @@ namespace BL.Services
     {
         public UserManager<AppUser> _userManager;
         public RoleManager<IdentityRole> _roleManager;
-
+        private readonly DbContainer _db;
         public JWT _jwt;
 
-        public AccountRepo(UserManager<AppUser> userManager, IOptions<JWT> jwt, RoleManager<IdentityRole> rmanager)
+        public AccountRepo(UserManager<AppUser> userManager, IOptions<JWT> jwt, RoleManager<IdentityRole> rmanager , DbContainer db)
         {
             _userManager = userManager;
             _jwt = jwt.Value;
             _roleManager = rmanager;
+            _db = db;
         }
 
         private async Task<JwtSecurityToken> CreateJwtToken(AppUser user)
@@ -61,6 +63,11 @@ namespace BL.Services
 
             return jwtSecurityToken;
         }
+        public async Task<string> AddNewRoleAsync(string role)
+        {
+            var result =  await _roleManager.CreateAsync(new IdentityRole(role));
+            return result.Succeeded.ToString();
+        }
 
         public async Task<AuthenticationModel> RegisterAsync(RegisterModel model)
         {
@@ -70,51 +77,86 @@ namespace BL.Services
             if (await _userManager.FindByNameAsync(model.UserName) is not null)
                 return new AuthenticationModel { Message = "this User Name is already registered " };
 
-            var user = new AppUser
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserName = model.UserName,
-                Email = model.Email,
-                Gmail = model.Gmail
-            };
-            var result = await _userManager.CreateAsync(user, model.Pasword);
-            if (!result.Succeeded)
-            {
-                var errors = string.Empty;
+            List<Char> CarChars = model.CarChars.ToList();  
+            if (model.CarChars?.Length == 2)
+                CarChars.Add('-');
+           Car car = _db.Cars.FirstOrDefault(f => f.FirstChar == CarChars[0] && f.SecondChar == CarChars[1] && f.ThirdChar == CarChars[2]&&f.CarNumbers==model.CarNumbers );
+            if(car is not null)
+                return new AuthenticationModel { Message = "this Car is already registered " };
 
-                foreach (var error in result.Errors)
+
+            var NewCar = new Car()
+            {
+                CarNumbers = model.CarNumbers.Replace(" ", ""),
+                CarTypeId = model.CarType,
+                FirstChar = CarChars[0],
+                SecondChar = CarChars[1],
+                ThirdChar = CarChars[2],
+                Name = $"{model.FirstName}  {model.LastName}  vecile ",
+                User = model.UserName
+            };
+            await _db.Cars.AddAsync(NewCar);
+            var result = await _db.SaveChangesAsync();
+            if(result > 0)
+            {
+                var user = new AppUser
                 {
-                    errors += error.Description + " ";
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    Gmail = model.Gmail,
+                    
+                };
+                var result1 = await _userManager.CreateAsync(user, model.Pasword);
+                if (!result1.Succeeded)
+                {
+                    var errors = string.Empty;
+
+                    foreach (var error in result1.Errors)
+                    {
+                        errors += error.Description + " ";
+                    }
+                    return new AuthenticationModel { Message = errors };
                 }
-                return new AuthenticationModel { Message = errors };
+                await _userManager.AddToRoleAsync(user, "User");
+                var JwtSecurityToken = await CreateJwtToken(user);
+                return new AuthenticationModel
+                {
+                    Email = user.Email,
+                    ExpiredOn = JwtSecurityToken.ValidTo,
+                    IsAuthenticated = true,
+                    Roles = new List<string> { "User" },
+                    Token = new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken),
+                    UserName = user.UserName
+                };
             }
 
-            
+            return new AuthenticationModel { Message = " Error Ocuured when Try To Save New User  " };
 
-            var UserRole = _roleManager.Roles.FirstOrDefault(f=>f.Name=="User");
-            if (UserRole == null)
-              await _roleManager.CreateAsync(new IdentityRole("User")) ;
-            
-            await _userManager.AddToRoleAsync(user, "User");
-            var JwtSecurityToken = await CreateJwtToken(user);
-            return new AuthenticationModel
-            {
-                Email = user.Email,
-                ExpiredOn = JwtSecurityToken.ValidTo,
-                IsAuthenticated = true,
-                Roles = new List<string> { "User" },
-                Token = new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken),
-                UserName = user.UserName
-            };
+
         }
 
         public async Task<AuthenticationModel> TokenAsync(getTokenModel model)
         {
+            List<char> CarChars = model.CarChars.ToList();
+            if (model.CarChars?.Length == 2)
+                CarChars.Add('-');
             AuthenticationModel TModel = new();
             AppUser user = await _userManager.FindByNameAsync(model.UserName);
             if (user == null)
                 user = await _userManager.FindByEmailAsync(model.UserName);
+            if (user == null)
+            {
+                var UserCar = _db.Cars.FirstOrDefault(f => f.FirstChar == CarChars[0] && f.SecondChar == CarChars[1] && f.ThirdChar == CarChars[2] && f.CarNumbers == model.CarNumbers);
+                if(UserCar is not null)
+                {
+                    user = await _userManager.FindByNameAsync(UserCar.User);
+                }
+            }
+
+
+
             if(user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 TModel.Message = "invalid UserName or password ";

@@ -1,7 +1,9 @@
 ﻿using Data.Entities;
+using Data.Views;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,10 @@ namespace Data
 {
     public class DbContainer : IdentityDbContext<AppUser>
     {
+        public DbContainer()
+        {
+        }
+
         public DbContainer(DbContextOptions<DbContainer> opts) : base(opts) { }
 
         public DbSet<CarType> CarTypes { get; set; }
@@ -25,8 +31,11 @@ namespace Data
         public DbSet<FuelType> FuelTypes { get; set; }
         public DbSet<PointsRatio> PointsRatios { get; set; }
         public DbSet<UnitType> UnitTypes { get; set; }
+        public DbSet<SalesMan> SalesMen { get; set; }
+        public DbSet<SalesRequest> SalesRequest { get; set; }
 
 
+        public virtual DbSet<TestView> TestViews { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -35,10 +44,19 @@ namespace Data
 
             base.OnModelCreating(builder);
             builder.Entity<AssignPoints>()
-     .HasOne(u =>u.Fueling)
-     .WithMany()
-     .OnDelete(DeleteBehavior.Restrict);
+                     .HasOne(u =>u.Fueling)
+                     .WithMany()
+                     .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<SalesMan>()
+                .HasOne(s => s.Station)
+                .WithMany();
 
+            builder.Entity<TestView>(a =>
+           {
+               a.HasNoKey();
+               a.ToView("TestView");
+           });
+                
         }
 
     }

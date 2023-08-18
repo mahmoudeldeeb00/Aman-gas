@@ -15,7 +15,7 @@ namespace Data.Entities
         public string Name { get; set; }
         public string? ARName { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public int Status { get; set; }
     }
 }

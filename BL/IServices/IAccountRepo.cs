@@ -11,5 +11,6 @@ namespace BL.IServices
     {
         Task<AuthenticationModel> RegisterAsync(RegisterModel model);
         Task<AuthenticationModel> TokenAsync(getTokenModel model);
+        Task<string> AddNewRoleAsync(string role);
     }
 }

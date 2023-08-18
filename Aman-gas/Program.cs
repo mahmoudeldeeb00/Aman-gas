@@ -2,6 +2,7 @@ using BL.Helpers;
 using BL.IServices;
 using BL.Services;
 using BL.TwilioSMSService;
+using BL.UOW;
 using Data;
 using Data.Entities;
 using Hangfire;
@@ -62,6 +63,10 @@ builder.Services.AddHangfireServer();
 #region injection 
 builder.Services.AddScoped<IAccountRepo, AccountRepo>();
 builder.Services.AddScoped<ISMSService, SMSService>();
+builder.Services.AddScoped< DbContainer>();
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddScoped(typeof(IBaseRepo<>),typeof(BaseRepo<>));
+builder.Services.AddScoped< DbContainer>();
 #endregion
 
 

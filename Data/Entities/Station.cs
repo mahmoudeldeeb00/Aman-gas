@@ -27,5 +27,9 @@ namespace Data.Entities
         public Region? Region { get; set; }
         public string? Phone { get; set; }
         public DateTime? DateCreated { get; set; } 
+
+
+
+        public ICollection<SalesMan> SalesMen { get; set; } 
     }
 }

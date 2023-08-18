@@ -9,16 +9,20 @@ namespace BL.DTOS
 {
     public class RegisterModel
     {
-        [Required, StringLength(20)]
+        public char[]? CarChars { get; set; }
+        public string CarNumbers { get; set; }
+        [Required, StringLength(50)]
         public string FirstName { get; set; }
-        [Required, StringLength(20)]
+        [Required, StringLength(50)]
         public string LastName { get; set; }
-        [Required, StringLength(50)]
+
         public string UserName { get; set; }
-        [Required, StringLength(50)]
+      
         public string Email { get; set; }
-        [Required, StringLength(20)]
+        [Required]
         public string Pasword { get; set; }
         public string? Gmail { get; set; }
+        public string? PhoneNumber { get; set; }
+        public int CarType { get; set; } = 0;
     }
 }
