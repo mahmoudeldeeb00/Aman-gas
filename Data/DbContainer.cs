@@ -47,9 +47,23 @@ namespace Data
                      .HasOne(u =>u.Fueling)
                      .WithMany()
                      .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<SalesMan>()
                 .HasOne(s => s.Station)
-                .WithMany();
+                .WithMany()
+                .HasForeignKey(s=>s.StationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Fueling>()
+                .HasOne(s => s.SalesMan)
+                .WithMany()
+                .HasForeignKey(s=>s.SalesManId)
+                .OnDelete( DeleteBehavior.Restrict);
+            builder.Entity<Fueling>()
+                .HasOne(s=>s.Station)
+                .WithMany()
+                .HasForeignKey(s=>s.StationId)
+                .OnDelete( DeleteBehavior.Restrict);
 
             builder.Entity<TestView>(a =>
            {

@@ -80,7 +80,13 @@ namespace BL.Services
             List<Char> CarChars = model.CarChars.ToList();  
             if (model.CarChars?.Length == 2)
                 CarChars.Add('-');
-           Car car = _db.Cars.FirstOrDefault(f => f.FirstChar == CarChars[0] && f.SecondChar == CarChars[1] && f.ThirdChar == CarChars[2]&&f.CarNumbers==model.CarNumbers );
+            if (model.CarChars?.Length == 1)
+            {
+                CarChars.Add('-');
+                CarChars.Add('-');
+
+            }
+            Car car = _db.Cars.FirstOrDefault(f => f.FirstChar == CarChars[0] && f.SecondChar == CarChars[1] && f.ThirdChar == CarChars[2]&&f.CarNumbers==model.CarNumbers );
             if(car is not null)
                 return new AuthenticationModel { Message = "this Car is already registered " };
 
@@ -139,9 +145,23 @@ namespace BL.Services
 
         public async Task<AuthenticationModel> TokenAsync(getTokenModel model)
         {
-            List<char> CarChars = model.CarChars.ToList();
-            if (model.CarChars?.Length == 2)
+            List<char> CarChars = new List<char>();
+            if(model.CarChars != null)
+            {
+
+                for (int i = 0 ; i < model.CarChars.Length; i++){
+                    CarChars.Add(model.CarChars[i]);
+                }
+             
+                if (model.CarChars?.Length == 2)
                 CarChars.Add('-');
+                if (model.CarChars?.Length == 1)
+                {
+                    CarChars.Add('-');
+                    CarChars.Add('-');
+                }
+                
+            }
             AuthenticationModel TModel = new();
             AppUser user = await _userManager.FindByNameAsync(model.UserName);
             if (user == null)

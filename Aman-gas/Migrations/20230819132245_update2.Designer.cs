@@ -4,6 +4,7 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aman_gas.Migrations
 {
     [DbContext(typeof(DbContainer))]
-    partial class DbContainerModelSnapshot : ModelSnapshot
+    [Migration("20230819132245_update2")]
+    partial class update2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -292,7 +294,7 @@ namespace Aman_gas.Migrations
                     b.Property<int>("FuelTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FueltTypeId")
+                    b.Property<int>("FueltTpeId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Ratio")

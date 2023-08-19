@@ -14,15 +14,16 @@ namespace Data.Entities
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         [Required]
         public string Password { get; set; }
         public DateTime RequestDate { get; set; }
         public int Status { get; set; } = 0;
         public string? Comment { get; set; }
-        public int? MangerApproved { get; set; }
+        public string MangerApproved { get; set; }
         [Required]
-        public int StatioId { get; set; }
-        [ForeignKey("StatioId")]
+        public int StationId { get; set; }
+        [ForeignKey("StationId")]
         public Station Station { get; set; }
 
     }

@@ -7,6 +7,7 @@ using Data;
 using Data.Entities;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +34,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequiredUniqueChars = 0;
 }
          ).AddEntityFrameworkStores<DbContainer>();
+
+// Auto Mapper
+builder.Services.AddAutoMapper(x=>x.AddProfile<DomainProfile>());
+// Authenticatinon
 #region ConfigureAuthentication
 builder.Services.AddAuthentication(opt =>
 {
@@ -56,17 +61,24 @@ builder.Services.AddAuthentication(opt =>
 });
 #endregion
 
+
+// HangFire 
 #region Configure Hangfire 
-builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnention")));
-builder.Services.AddHangfireServer();
+//builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnention")));
+//builder.Services.AddHangfireServer();
 #endregion
-#region injection 
+// Injections 
+#region injections
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IAccountRepo, AccountRepo>();
 builder.Services.AddScoped<ISMSService, SMSService>();
 builder.Services.AddScoped< DbContainer>();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped(typeof(IBaseRepo<>),typeof(BaseRepo<>));
 builder.Services.AddScoped< DbContainer>();
+builder.Services.AddScoped<IStationService , StationService>();
+builder.Services.AddScoped<IFuelingService , FuelingService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 #endregion
 
 
@@ -81,10 +93,12 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseSwagger();
+     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseHangfireDashboard("/BackGroundTasks");
+
+
+//app.UseHangfireDashboard("/BackGroundTasks");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();

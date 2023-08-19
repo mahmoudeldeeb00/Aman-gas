@@ -1,4 +1,6 @@
-﻿using BL.Helpers;
+﻿using BL.DTOS;
+using BL.Helpers;
+using BL.IServices;
 using BL.UOW;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,15 +11,18 @@ namespace Aman_gas.Controllers
     [ApiController]
     public class StationController : ControllerBase
     {
-        private readonly IUnitOfWork _unit;
-        public StationController(IUnitOfWork unit)
+        private readonly IStationService SS;
+        public StationController(IStationService _SS)
         {
-            this._unit = unit;
+            this.SS = _SS;
         }
         [HttpPost, Route("AddStation")]
-        public async Task<ActionResult<Response<string>>> AddStation(){
-            return Ok(new Response<string>() { });
-            }
+        public async Task<ActionResult<Response<string>>> AddStation(AddStationDTO Dto)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(await SS.AddStationAsync(Dto));
+        }
 
 
     }

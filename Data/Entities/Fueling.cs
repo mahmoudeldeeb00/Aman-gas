@@ -26,6 +26,9 @@ namespace Data.Entities
         [ForeignKey("StationId")]
         public Station Station { get; set; }
         public int? Status { get; set; } 
+        public int? SalesManId { get; set; }
+        [ForeignKey("SalesManId")]
+        public virtual SalesMan SalesMan { get; set; }
 
     }
 }

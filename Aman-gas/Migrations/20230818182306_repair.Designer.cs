@@ -4,6 +4,7 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aman_gas.Migrations
 {
     [DbContext(typeof(DbContainer))]
-    partial class DbContainerModelSnapshot : ModelSnapshot
+    [Migration("20230818182306_repair")]
+    partial class repair
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,10 +219,6 @@ namespace Aman_gas.Migrations
                     b.Property<int>("FuelTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SalesManId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.Property<int>("StationId")
                         .HasColumnType("int");
 
@@ -234,8 +232,6 @@ namespace Aman_gas.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FuelTypeId");
-
-                    b.HasIndex("SalesManId");
 
                     b.HasIndex("StationId");
 
@@ -292,7 +288,7 @@ namespace Aman_gas.Migrations
                     b.Property<int>("FuelTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FueltTypeId")
+                    b.Property<int>("FueltTpeId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Ratio")
@@ -706,16 +702,10 @@ namespace Aman_gas.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Entities.SalesMan", "SalesMan")
-                        .WithMany()
-                        .HasForeignKey("SalesManId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Data.Entities.Station", "Station")
                         .WithMany()
                         .HasForeignKey("StationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Data.Entities.AppUser", "AppUser")
@@ -727,8 +717,6 @@ namespace Aman_gas.Migrations
                     b.Navigation("AppUser");
 
                     b.Navigation("FuelType");
-
-                    b.Navigation("SalesMan");
 
                     b.Navigation("Station");
                 });
@@ -771,7 +759,7 @@ namespace Aman_gas.Migrations
                     b.HasOne("Data.Entities.Station", "Station")
                         .WithMany()
                         .HasForeignKey("StationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Data.Entities.Station", null)

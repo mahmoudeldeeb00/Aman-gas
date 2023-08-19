@@ -12,7 +12,7 @@ namespace Data.Entities
     {
         [Key]
         public int Id { get; set; }
-        public int FueltTpeId { get; set; }
+        public int FueltTypeId { get; set; }
         [ForeignKey("FuelTypeId")]
         public FuelType FuelType { get; set; }
 
