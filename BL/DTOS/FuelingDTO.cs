@@ -23,6 +23,7 @@ namespace BL.DTOS
         public decimal FuelSize { get; set; }
         [Required]
         public int StationId { get; set; }
-      
+        public int FuelingType { get; set; }
+
     }
 }

@@ -18,5 +18,9 @@ namespace BL.DTOS
 
         [Required]
         public int StationId { get; set; }
+        [Required ,MinLength(14),MaxLength(14)]
+        public string? NationalId { get; set; }
+        [Required]
+        public string? PhoneNumber { get; set; }
     }
 }

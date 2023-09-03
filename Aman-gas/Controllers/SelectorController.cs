@@ -122,5 +122,28 @@ namespace Aman_gas.Controllers
             }
             return Ok(response);
         }
+        [HttpGet("GetFuelTypes")]
+        public async Task<ActionResult<Response<List<SelectDTO>>>> GetFuelTypes()
+        {
+
+            var response = new Response<List<SelectDTO>>();
+            var result = await _unit.FuelTypes.FindAllAsync(s => s.Status == 1);
+            List<SelectDTO> unitTypes = result.Select(s => new SelectDTO { Id = s.Id, Name = s.Name, ARName = s.ARName }).ToList();
+
+            if (result.Count() > 0)
+            {
+                response.State = 1;
+                response.Data = unitTypes;
+                response.Message = "Get All Fuel Types  ";
+            }
+            else
+            {
+                response.State = 2;
+                response.Data = null;
+                response.Message = "No  Fuel Types found !";
+            }
+            return Ok(response);
+        }
+
     }
 }

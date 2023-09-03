@@ -4,6 +4,7 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aman_gas.Migrations
 {
     [DbContext(typeof(DbContainer))]
-    partial class DbContainerModelSnapshot : ModelSnapshot
+    [Migration("20230821193305_addvoidingdescription")]
+    partial class addvoidingdescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,9 +260,6 @@ namespace Aman_gas.Migrations
                     b.Property<string>("ARName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AssignPointBasedOn")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -391,14 +390,8 @@ namespace Aman_gas.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NationalId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StationId")
@@ -441,14 +434,8 @@ namespace Aman_gas.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NationalId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RequestDate")
@@ -559,31 +546,6 @@ namespace Aman_gas.Migrations
                     b.ToView("CarUsersBalance_V");
                 });
 
-            modelBuilder.Entity("Data.Views.SalesManPointDailyTracker_V", b =>
-                {
-                    b.Property<decimal>("CreditPoints")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("Day")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DayInString")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("DebitPoints")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SalesManId")
-                        .HasColumnType("int");
-
-                    b.ToView("SalesManPointDailyTracker_V");
-                });
-
             modelBuilder.Entity("Data.Views.SalesManPointMonthlyTracker_V", b =>
                 {
                     b.Property<decimal>("CreditPoints")
@@ -604,31 +566,6 @@ namespace Aman_gas.Migrations
                         .HasColumnType("int");
 
                     b.ToView("SalesManPointMonthlyTracker_V");
-                });
-
-            modelBuilder.Entity("Data.Views.StationPointDailyTracker_V", b =>
-                {
-                    b.Property<decimal>("CreditPoints")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("Day")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DayInString")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("DebitPoints")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StationId")
-                        .HasColumnType("int");
-
-                    b.ToView("StationPointDailyTracker_V");
                 });
 
             modelBuilder.Entity("Data.Views.StationPointMonthlyTracker_V", b =>

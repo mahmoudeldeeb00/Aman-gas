@@ -1,6 +1,7 @@
 ﻿using BL.IServices;
 using Data;
 using Data.Entities;
+using Data.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,11 @@ namespace BL.UOW
             this.CarTypes = new BaseRepo<CarType>(_context);
             this.UnitTypes = new BaseRepo<UnitType>(_context);
             this.FuelTypes = new BaseRepo<FuelType>(_context);
+            this.CarUsersBalance_V = new BaseRepo<CarUsersBalance_V>(_context);
+            this.SalesManPointMonthlyTracker_V = new BaseRepo<SalesManPointMonthlyTracker_V>(_context);
+            this.StationPointMonthlyTracker_V = new BaseRepo<StationPointMonthlyTracker_V>(_context);
+            this.SalesManPointDailyTracker_V = new BaseRepo<SalesManPointDailyTracker_V>(_context);
+            this.StationPointDailyTracker_V = new BaseRepo<StationPointDailyTracker_V>(_context);
         }
 
         public IBaseRepo<Data.Entities.Range> Ranges { get; private set; }
@@ -49,7 +55,15 @@ namespace BL.UOW
         public IBaseRepo<SalesRequest> SalesRequests { get; private set; }
         public IBaseRepo<Station> Stations { get; private set; }
 
-       
+
+        /// Views
+
+        public IBaseRepo<CarUsersBalance_V> CarUsersBalance_V { get; }
+        public IBaseRepo<SalesManPointMonthlyTracker_V> SalesManPointMonthlyTracker_V { get; }
+        public IBaseRepo<StationPointMonthlyTracker_V> StationPointMonthlyTracker_V { get; }
+        public IBaseRepo<SalesManPointDailyTracker_V> SalesManPointDailyTracker_V { get; }
+        public IBaseRepo<StationPointDailyTracker_V> StationPointDailyTracker_V { get; }
+
         public int Complete()=> _context.SaveChanges();
         public void RollBack() => _context.ChangeTracker.Clear();
         public void Dispose() { _context.Dispose(); }

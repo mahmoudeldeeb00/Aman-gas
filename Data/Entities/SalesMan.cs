@@ -21,6 +21,8 @@ namespace Data.Entities
         public int StationId { get; set; }
         [ForeignKey("StationId")]
         public Station Station { get; set; }
+        public string? NationalId { get; set; }
+        public string? PhoneNumber { get; set; }
 
 
     }

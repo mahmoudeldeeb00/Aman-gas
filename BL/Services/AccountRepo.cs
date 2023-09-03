@@ -79,11 +79,11 @@ namespace BL.Services
 
             List<Char> CarChars = model.CarChars.ToList();  
             if (model.CarChars?.Length == 2)
-                CarChars.Add('-');
+                CarChars.Add(' ');
             if (model.CarChars?.Length == 1)
             {
-                CarChars.Add('-');
-                CarChars.Add('-');
+                CarChars.Add(' ');
+                CarChars.Add(' ');
 
             }
             Car car = _db.Cars.FirstOrDefault(f => f.FirstChar == CarChars[0] && f.SecondChar == CarChars[1] && f.ThirdChar == CarChars[2]&&f.CarNumbers==model.CarNumbers );
@@ -154,11 +154,11 @@ namespace BL.Services
                 }
              
                 if (model.CarChars?.Length == 2)
-                CarChars.Add('-');
+                CarChars.Add(' ');
                 if (model.CarChars?.Length == 1)
                 {
-                    CarChars.Add('-');
-                    CarChars.Add('-');
+                    CarChars.Add(' ');
+                    CarChars.Add(' ');
                 }
                 
             }

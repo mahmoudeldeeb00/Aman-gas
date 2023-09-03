@@ -21,6 +21,9 @@ namespace BL.DTOS
       //  public string MangerApproved { get; set; }
         public int StatioId { get; set; }
         public string StationName { get; set; }
-        
+        public string? NationalId { get; set; }
+    
+        public string? PhoneNumber { get; set; }
+
     }
 }

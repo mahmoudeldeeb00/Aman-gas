@@ -22,6 +22,7 @@ namespace Data.Entities
         public FuelType FuelType { get; set; }
         [Column(TypeName = "decimal(12,4)")]
         public decimal FuelSize { get; set; }
+        public string? VoidingDescription { get; set; }
         public int StationId { get; set; }
         [ForeignKey("StationId")]
         public Station Station { get; set; }

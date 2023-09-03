@@ -113,6 +113,8 @@ namespace Aman_gas.Controllers
         [HttpPost("AddNewSalesRequest")]
         public async Task<ActionResult<Response<string>>> AddNewSalesRequest(AddSalesRequestDTO model)
         {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
             try
             {
                 if (!ModelState.IsValid)
@@ -121,18 +123,25 @@ namespace Aman_gas.Controllers
                 var IsExist =await  UOW.SalesRequests.FindAsync(f => f.Name == model.Name);
                 if(IsExist is not null)
                     return Ok(new Response<string>() { State = 2, Data = null, Message = "This Name Is Exist Please Change Name and Try Again ! " });
+                IsExist = await UOW.SalesRequests.FindAsync(f => f.NationalId == model.NationalId);
+                if (IsExist is not null)
+                    return Ok(new Response<string>() { State = 2, Data = null, Message = "This Nathional Id Is Alreardy Exist ! " });
+
+
 
                 model.Password = Encrypt_Decrypt.Encrypt(model.Password);
                 SalesRequest Entity = Mapper.Map<SalesRequest>(model);
+                if (Entity.DateOfBirth == null)
+                    Entity.DateOfBirth = DateTime.Parse("1900-01-01");
                 Entity.Status = 0;
                 Entity.RequestDate = AmanGasTime.Now();
                
               
                 Entity.MangerApproved = "";
                 var success = UOW.Complete();
-                await UOW.SalesRequests.AddAsync(Entity);
+              SalesRequest SR =   await UOW.SalesRequests.AddAsync(Entity);
                 if (UOW.Complete() == 1)
-                    return Ok(new Response<string>() { State = 1, Data = null, Message = "Request have been Saved Succefully ! \n wait the Manager to Approve It " });
+                    return Ok(new Response<string>() { State = 1, Data = SR.Id.ToString(), Message = "Request have been Saved Succefully ! \n wait the Manager to Approve It " });
                 return Ok(new Response<string>() { State = 500, Data = null, Message = "Request doesnot Saved ! \n Please Try Again ! " });
 
 
@@ -140,6 +149,8 @@ namespace Aman_gas.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("An error occurred while saving the entity changes"))
+                    return new Response<string>() { State = 10, Data = null, ErrorMessage = "Error Loss Of Data Entered NUll Or Foreign Keys" };
                 return Ok(new Response<string> { State = 500, Message = "Error !", ErrorMessage = ex.Message });
             }
         }

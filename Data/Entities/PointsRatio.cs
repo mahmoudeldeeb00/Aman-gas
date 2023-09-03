@@ -15,9 +15,9 @@ namespace Data.Entities
         public int FueltTypeId { get; set; }
         [ForeignKey("FuelTypeId")]
         public FuelType FuelType { get; set; }
-
         [Column(TypeName = "decimal(10,4)")]
         public decimal Ratio { get; set; } 
+        public decimal MoneyRatio { get; set; }
 
     }
 }

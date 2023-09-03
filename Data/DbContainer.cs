@@ -34,8 +34,15 @@ namespace Data
         public DbSet<SalesMan> SalesMen { get; set; }
         public DbSet<SalesRequest> SalesRequest { get; set; }
 
-
+        /// <summary>
+        /// //////Views 
+        /// </summary>
         public virtual DbSet<TestView> TestViews { get; set; }
+        public virtual DbSet<StationPointMonthlyTracker_V> StationPointMonthlyTracker_V { get; set; }
+        public virtual DbSet<SalesManPointMonthlyTracker_V> SalesManPointMonthlyTracker_V { get; set; }
+        public virtual DbSet<CarUsersBalance_V> CarUsersBalance_V { get; set; }
+        public virtual DbSet<SalesManPointDailyTracker_V> SalesManPointDailyTracker_V { get; set; }
+        public virtual DbSet<StationPointDailyTracker_V> StationPointDailyTracker_V { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -69,6 +76,31 @@ namespace Data
            {
                a.HasNoKey();
                a.ToView("TestView");
+           });  
+            builder.Entity<CarUsersBalance_V>(a =>
+           {
+               a.HasNoKey();
+               a.ToView("CarUsersBalance_V");
+           });  
+            builder.Entity<SalesManPointMonthlyTracker_V>(a =>
+           {
+               a.HasNoKey();
+               a.ToView("SalesManPointMonthlyTracker_V");
+           });
+            builder.Entity<StationPointMonthlyTracker_V>(a =>
+           {
+               a.HasNoKey();
+               a.ToView("StationPointMonthlyTracker_V");
+           });
+            builder.Entity<SalesManPointDailyTracker_V>(a =>
+           {
+               a.HasNoKey();
+               a.ToView("SalesManPointDailyTracker_V");
+           });
+            builder.Entity<StationPointDailyTracker_V>(a =>
+           {
+               a.HasNoKey();
+               a.ToView("StationPointDailyTracker_V");
            });
                 
         }

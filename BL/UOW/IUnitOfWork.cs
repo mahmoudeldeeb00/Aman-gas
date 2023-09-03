@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BL.IServices;
 using Data.Entities;
+using Data.Views;
 using Twilio.Jwt.AccessToken;
 
 namespace BL.UOW
@@ -23,6 +24,18 @@ namespace BL.UOW
         IBaseRepo<PointsRatio> PointsRatios { get; }
         IBaseRepo<Station> Stations { get; }
         IBaseRepo<FuelType> FuelTypes { get; }
+
+
+
+
+
+        /// Views 
+        IBaseRepo<CarUsersBalance_V> CarUsersBalance_V { get; }
+        IBaseRepo<SalesManPointMonthlyTracker_V> SalesManPointMonthlyTracker_V { get; }
+        IBaseRepo<StationPointMonthlyTracker_V> StationPointMonthlyTracker_V { get; }
+        IBaseRepo<SalesManPointDailyTracker_V> SalesManPointDailyTracker_V { get; }
+        IBaseRepo<StationPointDailyTracker_V> StationPointDailyTracker_V { get; }
+      
 
 
         int Complete();
