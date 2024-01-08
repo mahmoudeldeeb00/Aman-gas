@@ -24,13 +24,17 @@ namespace BL.Helpers
        public static Response<T> Handle(Exception ex)
         {
             if (ex.Message.Contains("An error occurred while saving the entity changes"))
-                return new Response<T>() { State = 10, Data = null, ErrorMessage = "Foreign Key Error" };
+                return new Response<T>() { State = 10, Data = null, ErrorMessage = "Foreign Key Error !!" }; 
+            if (ex.Message.Contains("Object reference not set to an instance of an object"))
+                return new Response<T>() { State = 10, Data = null, ErrorMessage = "Null Reference Error !!" };
             return new Response<T>() { State = 10 , Data = null ,Message = "Error" ,  ErrorMessage = ex.Message };
          } 
         public static PagResponse<T> PagHandle(Exception ex)
         {
             if (ex.Message.Contains("An error occurred while saving the entity changes"))
-                return new PagResponse<T>() { State = 10, Data = null, ErrorMessage = "Foreign Key Error" };
+                return new PagResponse<T>() { State = 10, Data = null, ErrorMessage = "Foreign Key Error !!" };
+            if (ex.Message.Contains("Object reference not set to an instance of an object"))
+                return new PagResponse<T>() { State = 10, Data = null, ErrorMessage = "Null Reference Error !!" };
             return new PagResponse<T>() { State = 10 , Data = null ,Message = "Error" ,  ErrorMessage = ex.Message };
          } 
     }
